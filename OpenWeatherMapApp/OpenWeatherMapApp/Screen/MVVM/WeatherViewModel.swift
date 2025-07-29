@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol HomePageViewModelDelegate: AnyObject {
     func fetchLoaded()
     func fetchFailed(error: Error)
@@ -16,15 +17,26 @@ protocol HomePageViewModelDelegate: AnyObject {
 @MainActor
 final class WeatherViewModel: ObservableObject {
     
-    weak var delegate: HomePageViewModelDelegate?
-    
+    weak var delegate: HomePageViewModelDelegate? // weak: Retain Cycle
     @Published private(set) var weather: OpenWeather?
     
-    func fetchWeather(lat: Double, long: Double) {
+    let lat: Double
+    let long: Double
+    
+    init(
+        lat: Double,
+        long: Double
+    ) {
+        self.lat = lat
+        self.long = long
+    }
+    
+    func fetchWeather() {
         delegate?.preFetch()
-        DispatchQueue.main.async {
-            Client.getWeatherByLatLong(lat: lat, long: long) { [weak self] weather, error in
-                guard let self = self else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            Client.getWeatherByLatLong(lat: lat, long: long) { weather, error in
                 if let error {
                     self.delegate?.fetchFailed(error: error)
                 }

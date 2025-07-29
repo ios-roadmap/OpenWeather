@@ -7,18 +7,19 @@
 
 import UIKit
 
+@MainActor
 protocol OpenWeatherRouterProtocol: AnyObject {
-    static func createModule() -> UIViewController
+    static func createModule(lat: Double, long: Double) -> UIViewController
     func navigateToDetail(from view: OpenWeatherViewProtocol, with weather: OpenWeather)
 }
 
 final class OpenWeatherRouter: OpenWeatherRouterProtocol {
     
-    static func createModule() -> UIViewController {
+    static func createModule(lat: Double, long: Double) -> UIViewController {
         let view = OpenWeatherViewController()
         let interactor = OpenWeatherInteractor()
         let router = OpenWeatherRouter()
-        let presenter = OpenWeatherPresenter(interactor: interactor, router: router)
+        let presenter = OpenWeatherPresenter(interactor: interactor, router: router, lat: lat, long: long)
         
         view.presenter = presenter
         presenter.view = view

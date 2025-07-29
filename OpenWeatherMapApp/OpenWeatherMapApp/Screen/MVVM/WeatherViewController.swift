@@ -9,7 +9,16 @@ import UIKit
 
 final class WeatherViewController: UIViewController {
     
-    private let viewModel: WeatherViewModel = .init()
+    private let viewModel: WeatherViewModel
+    
+    init(viewModel: WeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: .main)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let statusLabel: UILabel = {
         let label = UILabel()
@@ -23,7 +32,7 @@ final class WeatherViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         viewModel.delegate = self
-        viewModel.fetchWeather(lat: 41.0082, long: 28.9784)
+        viewModel.fetchWeather()
     }
     
     private func setupUI() {

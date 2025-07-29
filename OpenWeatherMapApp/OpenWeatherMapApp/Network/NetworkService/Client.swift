@@ -7,7 +7,6 @@
 
 import Foundation
 
-//MARK: Base Response Model
 struct BaseResponse: Codable {
     let status: Int
     let error: String
@@ -36,7 +35,7 @@ class Client {
                 return
             }
             let body = String(data: data, encoding: .utf8)
-            debugPrint(body as! NSString)
+            debugPrint(body as? NSString ?? "")
             let decoder = JSONDecoder()
             do {
                 let responseObject = try decoder.decode(ResponseType.self, from: data)
@@ -59,7 +58,7 @@ class Client {
         task.resume()
         return task
     }
-    
+    //MARK: static vs class method
     class func getWeatherByLatLong(lat: Double, long: Double, completion: @escaping(OpenWeather?, Error?) -> Void) {
          tasksForGETRequest(url: Endpoints.latLong(lat, long).url, responseType: OpenWeather.self) { response, error in
              if let response = response {

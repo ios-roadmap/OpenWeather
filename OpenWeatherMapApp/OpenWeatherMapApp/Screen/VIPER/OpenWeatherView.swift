@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol OpenWeatherViewProtocol: AnyObject {
     func showLoading()
     func hideLoading()

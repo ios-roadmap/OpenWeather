@@ -7,10 +7,12 @@
 
 import UIKit
 
+@MainActor
 protocol OpenWeatherInteractorInputProtocol: AnyObject {
     func fetchWeather(lat: Double, long: Double)
 }
 
+@MainActor
 protocol OpenWeatherInteractorOutputProtocol: AnyObject {
     func weatherFetched(_ weather: OpenWeather)
     func weatherFetchFailed(_ error: Error)

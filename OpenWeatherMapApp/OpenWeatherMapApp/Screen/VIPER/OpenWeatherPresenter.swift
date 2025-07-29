@@ -15,6 +15,7 @@ struct OpenWeatherViewModel {
 
 // MARK: - Presenter
 
+@MainActor
 protocol OpenWeatherPresenterProtocol: AnyObject {
     var view: OpenWeatherViewProtocol? { get set }
     func viewDidLoad()
@@ -26,14 +27,24 @@ final class OpenWeatherPresenter: OpenWeatherPresenterProtocol {
     private let interactor: OpenWeatherInteractorInputProtocol
     private let router: OpenWeatherRouterProtocol
     
-    init(interactor: OpenWeatherInteractorInputProtocol, router: OpenWeatherRouterProtocol) {
+    private let lat: Double
+    private let long: Double
+    
+    init(
+        interactor: OpenWeatherInteractorInputProtocol,
+        router: OpenWeatherRouterProtocol,
+        lat: Double,
+        long: Double
+    ) {
         self.interactor = interactor
         self.router = router
+        self.lat = lat
+        self.long = long
     }
     
     func viewDidLoad() {
         view?.showLoading()
-        interactor.fetchWeather(lat: 41.0082, long: 28.9784)
+        interactor.fetchWeather(lat: lat, long: long)
     }
 }
 

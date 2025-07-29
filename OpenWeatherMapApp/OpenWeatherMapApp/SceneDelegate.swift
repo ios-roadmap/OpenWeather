@@ -21,8 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 1) Yeni pencere oluştur
         let window = UIWindow(windowScene: windowScene)
 
-//        let rootVC = WeatherViewController()
-        let rootVC = OpenWeatherRouter.createModule()
+        let rootVC = UINavigationController(rootViewController: RetainCycleViewController())
+//        let rootVC = OpenWeatherRouter.createModule()
 
         // 3) Kök VC ata ve göster
         window.rootViewController = rootVC
