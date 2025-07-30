@@ -46,6 +46,18 @@ struct StackViewPaginationNavigationStrategy: WeatherNavigationStrategy {
     }
 }
 
+struct CollectionViewPaginationNavigationStrategy: WeatherNavigationStrategy {
+    func makeWeatherScene(lat: Double, long: Double) -> UIViewController {
+        InfiniteCollectionViewController()
+    }
+}
+
+struct TableViewPaginationNavigationStrategy: WeatherNavigationStrategy {
+    func makeWeatherScene(lat: Double, long: Double) -> UIViewController {
+        InfiniteTableViewController()
+    }
+}
+
 final class RetainCycleViewController: UIViewController {
     
     private let buttons: [(title: String, action: Selector)] = [
@@ -54,6 +66,8 @@ final class RetainCycleViewController: UIViewController {
         ("Open MVVM Weather", #selector(didTapMVVM)),
         ("Rick And Morty App", #selector(didTapRM)),
         ("Stack View Pagination", #selector(didTapStackViewPagination)),
+        ("Collection View Pagination", #selector(didTapCollectionViewPagination)),
+        ("Table View Pagination", #selector(didTapTableViewPagination)),
     ]
     
     override func viewDidLoad() {
@@ -103,6 +117,14 @@ final class RetainCycleViewController: UIViewController {
     
     @objc private func didTapStackViewPagination() {
         navigate(with: StackViewPaginationNavigationStrategy())
+    }
+    
+    @objc private func didTapCollectionViewPagination() {
+        navigate(with: CollectionViewPaginationNavigationStrategy())
+    }
+
+    @objc private func didTapTableViewPagination() {
+        navigate(with: TableViewPaginationNavigationStrategy())
     }
     
     private func navigate(with strategy: WeatherNavigationStrategy) {
