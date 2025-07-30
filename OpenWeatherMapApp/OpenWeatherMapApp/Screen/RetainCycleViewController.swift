@@ -34,12 +34,19 @@ struct MVVMWeatherNavigationStrategy: WeatherNavigationStrategy {
     }
 }
 
+struct RMNavigationStrategy: WeatherNavigationStrategy {
+    func makeWeatherScene(lat: Double, long: Double) -> UIViewController {
+        RMCharacterListRouter.createModule()
+    }
+}
+
 final class RetainCycleViewController: UIViewController {
     
     private let buttons: [(title: String, action: Selector)] = [
         ("Open VIPER Weather", #selector(didTapVIPER)),
         ("Open VIP Weather", #selector(didTapVIP)),
-        ("Open MVVM Weather", #selector(didTapMVVM))
+        ("Open MVVM Weather", #selector(didTapMVVM)),
+        ("Rick And Morty App", #selector(didTapRM)),
     ]
     
     override func viewDidLoad() {
@@ -81,6 +88,10 @@ final class RetainCycleViewController: UIViewController {
     
     @objc private func didTapMVVM() {
         navigate(with: MVVMWeatherNavigationStrategy())
+    }
+    
+    @objc private func didTapRM() {
+        navigate(with: RMNavigationStrategy())
     }
     
     private func navigate(with strategy: WeatherNavigationStrategy) {

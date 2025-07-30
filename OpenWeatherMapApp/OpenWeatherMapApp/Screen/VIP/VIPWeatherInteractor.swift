@@ -37,4 +37,5 @@ final class VIPWeatherInteractor: VIPWeatherBusinessLogic, VIPWeatherDataStore {
             }
         }
     }
+
 }

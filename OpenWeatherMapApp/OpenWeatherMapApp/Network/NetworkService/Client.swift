@@ -21,7 +21,7 @@ extension BaseResponse: LocalizedError {
 import Foundation
 
 class Client {
-     
+    
     // General Get Request
     @discardableResult
     private class func tasksForGETRequest<ResponseType: Codable>(url: URL, responseType: ResponseType.Type, completion: @escaping(ResponseType?, Error?) -> Void) -> URLSessionDataTask {
@@ -60,33 +60,71 @@ class Client {
     }
     //MARK: static vs class method
     class func getWeatherByLatLong(lat: Double, long: Double, completion: @escaping(OpenWeather?, Error?) -> Void) {
-         tasksForGETRequest(url: Endpoints.latLong(lat, long).url, responseType: OpenWeather.self) { response, error in
-             if let response = response {
-                 completion(response, nil)
-             } else {
-                 completion(nil, error)
-             }
-         }
-     }
+        tasksForGETRequest(
+            url: Endpoints.OpenWeatherMap.latLong(lat, long).url,
+            responseType: OpenWeather.self
+        ) { response, error in
+            if let response = response {
+                completion(response, nil)
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    class func getRickAndMorty(completion: @escaping(RickAndMorty?, Error?) -> Void) {
+        tasksForGETRequest(
+            url: Endpoints.RickAndMorty.characters.url,
+            responseType: RickAndMorty.self) { response, error in
+                if let response {
+                    completion(response, nil)
+                } else {
+                    completion(nil, error)
+                }
+            }
+    }
 }
 
 import Foundation
 
 enum Endpoints {
-    static private let baseApi = "https://api.openweathermap.org/data/2.5/weather"
     
-    case latLong(Double, Double)
-    
-    var stringValue: String {
-        switch self {
-        case .latLong(let latitude, let longtitude):
-            return Endpoints.baseApi + "?lat=\(latitude)&lon=\(longtitude)&appid=8ddadecc7ae4f56fee73b2b405a63659"
+    enum OpenWeatherMap {
+        static private let baseApi = "https://api.openweathermap.org/data/2.5/weather"
+        static private let apiKey = "8ddadecc7ae4f56fee73b2b405a63659"
+        
+        case latLong(Double, Double)
+        
+        var stringValue: String {
+            switch self {
+            case .latLong(let latitude, let longtitude):
+                return OpenWeatherMap.baseApi + "?lat=\(latitude)&lon=\(longtitude)&appid=\(OpenWeatherMap.apiKey)"
+            }
+        }
+        
+        var url: URL {
+            return URL(string: stringValue)!
         }
     }
     
-    var url: URL {
-        return URL(string: stringValue)!
+    enum RickAndMorty {
+        static private let baseApi = "https://rickandmortyapi.com/api/"
+        
+        case characters, locations, episodes
+        
+        var stringValue: String {
+            switch self {
+            case .characters:
+                return RickAndMorty.baseApi + "character/"
+            case .episodes:
+                return RickAndMorty.baseApi + "episode/"
+            case .locations:
+                return RickAndMorty.baseApi + "location/"
+            }
+        }
+        
+        var url: URL {
+            return URL(string: stringValue)!
+        }
     }
 }
-
-

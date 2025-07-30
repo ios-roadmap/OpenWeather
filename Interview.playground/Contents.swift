@@ -16,6 +16,6 @@ struct Location {
 
 func handle(locations: [Location]) {
     let me = Location(coordinates: (4,
-                                    2))
+                                     2))
     let filtered = locations.filter({ $0.id == me.id })
 }
