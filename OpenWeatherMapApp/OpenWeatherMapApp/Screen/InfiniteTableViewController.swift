@@ -67,11 +67,18 @@ extension InfiniteTableViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // scrollView'in dikey eksendeki (Y) mevcut kaydırma konumunu alıyoruz
         let offsetY = scrollView.contentOffset.y
+        
+        // scrollView içeriğinin toplam yüksekliğini alıyoruz
         let contentHeight = scrollView.contentSize.height
+        
+        // scrollView'in görünen (ekranda gösterilen) yüksekliğini alıyoruz
         let height = scrollView.frame.size.height
 
+        // Eğer kullanıcı scroll'u içeriğin sonuna kadar kaydırdıysa (veya biraz daha fazlası)
         if offsetY > contentHeight - height {
+            // Daha fazla içerik yükleme işlemi tetikleniyor
             loadMoreContent()
         }
     }

@@ -17,15 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        // 1) Yeni pencere oluştur
         let window = UIWindow(windowScene: windowScene)
 
-        let rootVC = UINavigationController(rootViewController: RetainCycleViewController())
-//        let rootVC = OpenWeatherRouter.createModule()
+//        let rootVC = UINavigationController(rootViewController: RetainCycleViewController())
 
-        // 3) Kök VC ata ve göster
-        window.rootViewController = rootVC
+        let vc = RMCharacterListRouter.createModule()
+        window.rootViewController = UINavigationController(rootViewController: vc)
         self.window = window
         window.makeKeyAndVisible()
     }
